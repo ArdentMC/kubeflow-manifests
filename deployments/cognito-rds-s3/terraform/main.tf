@@ -3,7 +3,7 @@ locals {
   region       = var.cluster_region
   eks_version  = var.eks_version
 
-  vpc_cidr = "10.0.0.0/16"
+  vpc_cidr = var.vpc_cidr
 
   using_gpu = var.node_instance_type_gpu != null
 
@@ -19,6 +19,7 @@ locals {
   tags = {
     Platform        = "kubeflow-on-aws"
     KubeflowVersion = "1.7"
+    env             = "test"
   }
 
   kf_helm_repo_path = var.kf_helm_repo_path
@@ -27,8 +28,8 @@ locals {
   managed_node_group_cpu = {
     node_group_name = "managed-ondemand-cpu"
     instance_types  = [var.node_instance_type]
-    min_size        = 5
-    desired_size    = 5
+    min_size        = 2
+    desired_size    = 2
     max_size        = 10
     disk_size       = var.node_disk_size_cpu
     subnet_ids      = module.vpc.private_subnets
@@ -37,8 +38,8 @@ locals {
   managed_node_group_gpu = local.using_gpu ? {
     node_group_name = "managed-ondemand-gpu"
     instance_types  = [var.node_instance_type_gpu]
-    min_size        = 3
-    desired_size    = 3
+    min_size        = 2
+    desired_size    = 2
     max_size        = 5
     ami_type        = "AL2_x86_64_GPU"
     disk_size       = var.node_disk_size_gpu

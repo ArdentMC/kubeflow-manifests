@@ -20,6 +20,12 @@ variable "eks_version" {
   default     = "1.25"
 }
 
+variable "vpc_cidr" {
+  description = "The VPC CIDR addresses to use"
+  type = string
+  default = "10.0.0.0/16"
+}
+
 variable "node_instance_type" {
   description = "The instance type of an EKS node"
   type        = string
